@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.show-btn {
+  background: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.show-btn {
+  background-color: darkblue;
+  position: absolute;
+  top: 12%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+}
+
+.show-btn1 {
+  background-color: orangered;
+  padding: 1px 20px;
+  height: 30px;
+  color: white;
+  border-radius: 20px;
+}
+
+.show-btn1:hover {
+  background-color: red;
+  padding: 1px 20px;
+  height: 30px;
+  color: white;
+  border-radius: 20px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.container {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: lightblue;
+  border-radius: 20px;
+  width: 410px;
+  padding: 50px;
+  box-shadow: 10px 20px 30px black;
+}
+
+.container1 {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: lightblue;
+  border-radius: 20px;
+  width: 410px;
+  padding: 50px;
+  box-shadow: 10px 20px 30px black;
+}
+
+#show:checked~.container {
+  display: block;
+}
+
+.container .close-btn {
+  position: absolute;
+  font-size: 18px;
+  left: 43%;
+  cursor: pointer;
+}
+
+.container .close-btn:hover {
+  color: #3498db;
+}
+
+.container .text {
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+}
+
+
+.container form {
+  margin-top: -20px;
+}
+
+.container form .data {
+  height: 45px;
+  width: 100%;
+  margin: 40px 0;
+}
+
+form .data label {
+  font-size: 18px;
+}
+
+form .data input {
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  font-size: 17px;
+  border: 1px solid silver;
+}
+
+form .data input:focus {
+  border-color: #3498db;
+  border-bottom-width: 2px;
+}
+
+form .btn {
+  margin: 30px 0;
+  height: 45px;
+  width: 100%;
+  background-color: darkblue;
+  position: relative;
+  overflow: hidden;
+}
+
+form .btn:hover {
+  background-color: black;
+}
+
+form .btn button {
+  height: 100%;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+table {
+  text-align: center;
+  width: 80%;
+  padding-top: 50px;
+  margin-left: 10%;
+}
+
+table .submit {
+  width: 100px;
+  height: 30px;
+  border: None;
+  color: white;
+  background-color: darkblue;
+  border-radius: 20px;
+}
+
+table .edit {
+  width: 100px;
+  height: 30px;
+  border: None;
+  color: white;
+  background-color: orangered;
+  border-radius: 20px;
+}
+
+.table-header {
+  background-color: grey;
+}
+
+table .submit:hover {
+  background-color: black;
+}
+
+table .edit:hover {
+  background-color: red;
+}
+
+.SearchContainer {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.SeachLabel {
+  font-size: 20px;
+  text-decoration: bold;
+}
+
+.buttonShow {
+  background-color: orangered;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  width: 100px;
+  height: 30px;
+}

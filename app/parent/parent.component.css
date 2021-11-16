@@ -1,0 +1,135 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.show-btn {
+  background: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.show-btn1 {
+  background-color: orangered;
+  padding: 1px 20px;
+  height: 30px;
+  color: white;
+  border-radius: 20px;
+}
+
+.show-btn1:hover {
+  background-color: red;
+  padding: 1px 20px;
+  height: 30px;
+  color: white;
+  border-radius: 20px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.container1 {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: none;
+  background: lightblue;
+  border-radius: 20px;
+  width: 410px;
+  padding: 50px;
+  box-shadow: 10px 20px 30px black;
+}
+
+#show1:checked~.container1 {
+  display: block;
+}
+
+.container1 .close-btn {
+  position: absolute;
+  font-size: 18px;
+  left: 43%;
+  cursor: pointer;
+}
+
+.container1 .close-btn:hover {
+  color: #3498db;
+}
+
+.container1 .text {
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+}
+
+
+.container1 form {
+  margin-top: -20px;
+}
+
+.container1 form .data {
+  height: 45px;
+  width: 100%;
+  margin: 40px 0;
+}
+
+form .data label {
+  font-size: 18px;
+}
+
+form .data input {
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
+  font-size: 17px;
+  border: 1px solid silver;
+}
+
+form .data input:focus {
+  border-color: #3498db;
+  border-bottom-width: 2px;
+}
+
+form .btn {
+  margin: 30px 0;
+  height: 45px;
+  width: 100%;
+  background-color: darkblue;
+  position: relative;
+  overflow: hidden;
+}
+
+form .btn:hover {
+  background-color: black;
+}
+
+form .btn button {
+  height: 100%;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.buttonShow {
+  background-color: orangered;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  width: 100px;
+  height: 30px;
+}

@@ -1,0 +1,74 @@
+<h1 style="text-align: center;">Phone Book App</h1>
+
+<h2 style="text-align: center;">Contacts</h2>
+
+<form [formGroup] = 'searchForm' (ngSubmit) = 'Search()' class = "SearchContainer">
+    <label class = "SeachLabel">Search for contacts: </label>
+    <input type = "text" id = "search" name = "search" formControlName = "search">
+    <div class = "table">
+        <table>
+            <thead class = "table-header">
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Number</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+            </thead>       
+            <tbody>
+                <ng-container *ngIf = "search.value != ''">
+                    <ng-container *ngFor = "let contact of contacts">
+                        <ng-container *ngIf = "(contact.firstName | lowercase).includes(search.value | lowercase) || (contact.firstName + ' ' + contact.lastName | lowercase).includes(search.value | lowercase)">
+                            <tr>
+                                <td>{{contact.firstName}}</td>
+                                <td>{{contact.lastName}}</td>
+                                <td>{{contact.number}}</td>
+                                <td><input type = "submit" value = "Delete" (click) = "DeleteContact(contact)" class = "submit"></td>
+                                <td><app-parent [contacts] = "contact" [contactsArray] = "contacts"></app-parent></td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf = "search.value == ''">
+                        <ng-container *ngFor = "let contact of contacts">
+                            <tr>
+                                <td>{{contact.firstName}}</td>
+                                <td>{{contact.lastName}}</td>
+                                <td>{{contact.number}}</td>
+                                <td><input type = "submit" value = "Delete" (click) = "DeleteContact(contact)" class = "submit"></td>
+                                <td><app-parent [contacts] = "contact" [contactsArray] = "contacts" (change) = "contacts=$event"></app-parent></td>
+                            </tr>
+                        </ng-container>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="center">
+    <input type="checkbox" id="show">
+    <label for="show" class="show-btn">+ Create</label>
+    <div class="container">
+    <div class="text">
+        New Contact Information
+    </div>
+        <form [formGroup] = 'contactForm' (ngSubmit) = 'AddData()'>
+            <div class="data">
+                <label>First Name</label>
+                <input type="text" id = "firstName" name = "firstName" formControlName = "firstName" required>
+            </div>
+            <div class="data">
+                <label>Last Name: </label>
+                <input type="text" id = "lastName" name = "lastName" formControlName = "lastName">
+            </div>
+            <div class="data">
+                <label>Number: </label>
+                <input type="text" id = "number" name = "number" formControlName = "number" required>
+            </div>
+            <div class="btn">
+                <div class="inner"></div>
+                <button type="submit">Save</button>
+            </div>
+            <label for="show" class="close-btn fas fa-times" title="close">Close</label>
+        </form>
+    </div>
+</div>

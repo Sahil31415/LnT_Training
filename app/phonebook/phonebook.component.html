@@ -3,8 +3,8 @@
 <h2 style="text-align: center;">Contacts</h2>
 
 <form [formGroup] = 'searchForm' (ngSubmit) = 'Search()' class = "SearchContainer">
-    <label class = "SeachLabel">Search for contacts: </label>
-    <input type = "text" id = "search" name = "search" formControlName = "search">
+    <label class = "SeachLabel">Search for contacts : </label>
+    <input type = "text" id = "search" name = "search" formControlName = "search" placeholder="Enter name or number" class = "SearchInput">
     <div class = "table">
         <table>
             <thead class = "table-header">
@@ -18,7 +18,7 @@
             <tbody>
                 <ng-container *ngIf = "search.value != ''">
                     <ng-container *ngFor = "let contact of contacts">
-                        <ng-container *ngIf = "(contact.firstName | lowercase).includes(search.value | lowercase) || (contact.firstName + ' ' + contact.lastName | lowercase).includes(search.value | lowercase)">
+                        <ng-container *ngIf = "(contact.firstName | lowercase).includes(search.value | lowercase) || (contact.number).includes(search.value) || (contact.firstName + ' ' + contact.lastName | lowercase).includes(search.value | lowercase)">
                             <tr>
                                 <td>{{contact.firstName}}</td>
                                 <td>{{contact.lastName}}</td>
@@ -54,7 +54,15 @@
         <form [formGroup] = 'contactForm' (ngSubmit) = 'AddData()'>
             <div class="data">
                 <label>First Name</label>
-                <input type="text" id = "firstName" name = "firstName" formControlName = "firstName" required>
+                <input type="text" id = "firstName" name = "firstName" formControlName = "firstName">
+                <div *ngIf = "!firstName?.valid && (firstName?.touched || firstName?.dirty)" style = "color: red;">
+                    <div [hidden] = '!firstName.errors?.["required"]'>
+                        Name must be entered.
+                    </div>
+                    <div [hidden] = '!firstName.errors?.["pattern"]'>
+                        Only Characters are allowed.
+                    </div>
+                </div>
             </div>
             <div class="data">
                 <label>Last Name: </label>
@@ -62,12 +70,17 @@
             </div>
             <div class="data">
                 <label>Number: </label>
-                <input type="text" id = "number" name = "number" formControlName = "number" required>
+                <input type="text" id = "number" name = "number" formControlName = "number" >
+                <div *ngIf = "!number?.valid && (number?.touched || number?.dirty)" style = "color: red;">
+                    <div [hidden] = '!number.errors?.["required"]'>
+                        Number is necessary here.
+                    </div>
+                    <div [hidden] = '!number.errors?.["pattern"]'>
+                        Only numbers are allowed.
+                    </div>
+                </div>
             </div>
-            <div class="btn">
-                <div class="inner"></div>
-                <button type="submit">Save</button>
-            </div>
+            <input type="submit" [disabled] = "!contactForm.valid" value = "Save" class = "buttonSave"><br><br>
             <label for="show" class="close-btn fas fa-times" title="close">Close</label>
         </form>
     </div>

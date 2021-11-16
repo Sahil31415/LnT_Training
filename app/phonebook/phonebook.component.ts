@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../contact';
-import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
-import { ConvertActionBindingResult } from '@angular/compiler/src/compiler_util/expression_converter';
+import { Validators, FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,14 +15,15 @@ export class PhoneBookComponent implements OnInit {
   searchForm: any;
   searchName: string = '';
   search = new FormControl('');
-  firstName = new FormControl('');
+  firstName = new FormControl('', [Validators.required, Validators.maxLength(20), Validators.pattern('^[a-zA-Z]+$')]);
   lastName = new FormControl('');
-  number = new FormControl('');
+  number = new FormControl('', [Validators.required, Validators.maxLength(10), Validators.minLength(8), Validators.pattern('^[0-9]+$')]);
   editFirstName = new FormControl('');
   editLastName = new FormControl('');
   editNumber = new FormControl('');
-  contacts: Contact[] = [new Contact('Micheal', 'Scott', '1234567890'),
-  new Contact('Dwight', 'Schrute', '987654321')];
+  contacts: Contact[] = [new Contact('Micheal', 'Scott', '123456789'),
+  new Contact('Dwight', 'Shrute', '9876548321'),
+  new Contact('Jim', 'Halpert', '9872143743')];
 
   constructor(private fb: FormBuilder, private router: Router) { }
 

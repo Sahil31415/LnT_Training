@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-image: url('Contact.jpg');
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-attachment: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  background-position-x: 50%;
+}
+
+img {
+  opacity: 0.5;
+}

@@ -1,0 +1,328 @@
+/**
+* @class DCT.Util
+*/
+Ext.apply(DCT.Util, {
+    /**
+    *
+    */
+    checkIfAllocationAndPaymentFieldsBlank: function () {      
+        return (DCT.Util.checkIfPaymentFieldsBlank() || DCT.Util.checkIfAllocationFieldsBlank());
+    },
+    /**
+    *
+    */
+    checkIfAllocationFieldsBlank: function () {
+        var paymentType = Ext.getCmp('paymentType').getValue();
+        var otherAmount = Ext.getCmp('_otherAmountId');
+        var otherAmountValue = parseFloat(otherAmount.formatting.formatNumberToUS(otherAmount.getValue()));
+        var disablePaymentTypeCheck = false;
+        var disableOtherAmtCheck = true;
+		var test=true;
+        if (paymentType == 'A') {
+            if (otherAmountValue == 0)
+                disablePaymentTypeCheck = true;
+            else
+                disablePaymentTypeCheck = false;
+        }
+        if (Ext.getCmp("manuallyAllocatePaymentId").getValue()) {
+            var totalAllocated = Ext.get('amountAllocatedTotalId').getValue();
+            if (parseFloat(totalAllocated) == 0)
+                disableAllocatedAmtCheck = true;
+            else
+                disableAllocatedAmtCheck = false;
+        }
+        if (Ext.getCmp("otherAmountId").getValue()) {
+            if (otherAmountValue > 0)
+                disableOtherAmtCheck = false;
+            else
+                disableOtherAmtCheck = true;
+        }
+        if ((disablePaymentTypeCheck) || (disableAllocatedAmtCheck) || (disableOtherAmtCheck))
+            return true;
+        else
+            return false;
+    },
+    /**
+    *
+    */
+    checkIfReverseReasonFieldBlank: function () {
+        var RevReason = Ext.getCmp('revReasonField').getValue();
+        var selectedItems = Ext.getCmp('WriteOffWaivedList').getSelectionModel().getCount();
+
+        if (RevReason == '' || (selectedItems == 0))
+            return true;
+
+        return false;
+    },
+    /**
+    *
+    */
+    checkIfPaymentFieldsBlank: function () {        
+        //var partyType = DCT.Util.getSafeElement("_hiddenPartyType").value;
+        //var paymentMethod = Ext.getCmp('paymentMethod').getValue();
+        //var firstnamecheck = false;
+
+        //if (!Ext.isEmpty(partyType)) {
+        //    if (paymentMethod == 'CK' && partyType != 'O') {
+        //        var checkFirstName = Ext.getCmp('nameOnCheck').getValue();
+        //        firstnamecheck = Ext.isEmpty(checkFirstName);
+        //    }
+        //}
+
+        //return (firstnamecheck || DCT.Util.checkIfPaymentFieldsBlankv2());
+        return (DCT.Util.checkIfPaymentFieldsBlankv2());
+    },
+    /**
+    *
+    */
+    checkIfPaymentFieldsBlankv2: function () {
+        var partyType = DCT.Util.getSafeElement("_hiddenPartyType").value;
+        var firstnamecheck = false;
+        var checkForAmount = false;
+        var paymentType = Ext.getCmp('paymentType').getValue();
+        var isValidPaymentType = Ext.getCmp('paymentType').isValid();
+        var paymentMethod = Ext.getCmp('paymentMethod').getValue();
+        var isValidPaymentMethod = Ext.getCmp('paymentMethod').isValid();
+        var dateReceived = Ext.getCmp('checkRecvDate').getValue();
+        var paymentAmount = Ext.getCmp('paymentAmount');
+        var paymentAmountValue = 0;
+        
+        if (paymentAmount) {
+            var paymentValue = paymentAmount.getValue();
+            paymentAmountValue = (Ext.isEmpty(paymentValue)) ? 0 : parseFloat(paymentAmount.formatting.formatNumberToUS(paymentValue));
+            checkForAmount = true;
+        }
+        else
+            checkForAmount = false;
+
+        var disablePaymentMethodCheck = false;
+        var disablePaymentTypeCheck = false;
+        var disablePaymentAmtCheck = false;
+        var address;
+        var city;
+        var state;
+        var postalCode;
+        var country;
+        var phone;
+        var email;
+
+        switch (paymentMethod) {
+        	case 'CK':
+
+        		//var checkNameOnCheck = Ext.getCmp('NameOnCheck').getValue();
+        		var checkNameOnCheck = "";
+        		if (Ext.getCmp('firstName') != undefined)
+        			checkNameOnCheck = Ext.getCmp('firstName').getValue();
+        		if (Ext.getCmp('lastName') != undefined)
+        			checkNameOnCheck = checkNameOnCheck + Ext.getCmp('lastName').getValue();
+        		
+        		
+				if ((Ext.isEmpty(paymentMethod)) || (Ext.isEmpty(paymentType)) || (Ext.isEmpty(checkNameOnCheck))) {
+        		    disablePaymentMethodCheck = true;
+                } else {
+                    disablePaymentMethodCheck = false;
+                }
+                break;
+            case 'CC':
+            case 'CS':
+                if ((Ext.isEmpty(dateReceived)) || (Ext.isEmpty(paymentMethod)) || (Ext.isEmpty(paymentType))) {
+                    disablePaymentMethodCheck = true;
+                } else {
+                    disablePaymentMethodCheck = false;
+                }
+                break;
+            case 'WT':
+                if (Ext.isEmpty(dateReceived))
+                    disablePaymentMethodCheck = true;
+                else
+                    disablePaymentMethodCheck = false;
+                break;
+            case 'EC':
+                if (!Ext.isEmpty(partyType)) {
+                    if (partyType != 'O') {
+                        var checkFirstName = Ext.getCmp('firstName').getValue();
+                        firstnamecheck = Ext.isEmpty(checkFirstName);
+                    }
+                }                
+                var checkLastName = Ext.getCmp('lastName').getValue();
+                var acctNbr = Ext.getCmp('bankAccountNumber').getValue();
+                var acctType = Ext.getCmp('bankAcctType').getValue();
+                var routeNbr = Ext.getCmp('bankRouteNumber').getValue();
+                var isValidPhone = Ext.getCmp('phone').isValid();
+                var isValidEmail = Ext.getCmp('email').isValid();
+                var isValidPostalCode = Ext.getCmp('postalCode').isValid();
+                address = Ext.getCmp('address').getValue();
+                city = Ext.getCmp('city').getValue();
+                state = Ext.getCmp('state').getValue();
+                postalCode = Ext.getCmp('postalCode').getValue();
+                country = Ext.getCmp('country').getValue();
+                phone = Ext.getCmp('phone').getValue();
+                email = Ext.getCmp('email').getValue();
+
+                if ((!(isValidPaymentMethod)) || (!(isValidPaymentType)) || (!(isValidEmail)) || (!(isValidPhone)) || (!(isValidPostalCode)) ||
+					    (Ext.isEmpty(dateReceived) || firstnamecheck || Ext.isEmpty(checkLastName) || Ext.isEmpty(acctNbr) || Ext.isEmpty(routeNbr) ||
+					    Ext.isEmpty(acctType) || Ext.isEmpty(address) || Ext.isEmpty(city) || Ext.isEmpty(state) || Ext.isEmpty(postalCode) || Ext.isEmpty(country) ||
+					    Ext.isEmpty(phone) || Ext.isEmpty(email)))
+                    disablePaymentMethodCheck = true;
+                else
+                    disablePaymentMethodCheck = false;
+                break;
+            
+            case 'DC':
+            case 'PAC':
+            case 'PAD':
+                if (!Ext.isEmpty(partyType)) {
+                    if (partyType != 'O') {
+                        var cardFirstName = Ext.getCmp('firstName').getValue();
+                        firstnamecheck = Ext.isEmpty(cardFirstName);
+                    }
+                }
+                var cardType = Ext.getCmp('cardType').getValue();
+                var isValidCardType = Ext.getCmp('cardType').isValid();               
+                var cardLastName = Ext.getCmp('lastName').getValue();
+                var cardNumber = Ext.getCmp('_cardNumberId').getValue();
+                var isValidCardNumber = Ext.getCmp('_cardNumberId').isValid();
+                var expMonth = Ext.getCmp('expMonth').getValue();
+                var expYear = Ext.getCmp('expYear').getValue();
+                var isValidExpMonth = Ext.getCmp('expMonth').isValid();
+                var isValidExpYear = Ext.getCmp('expYear').isValid();
+                var isValidPostalCode = Ext.getCmp('postalCode').isValid();
+                var isValidPhone = Ext.getCmp('phone').isValid();
+                var isValidEmail = Ext.getCmp('email').isValid();
+                address = Ext.getCmp('address').getValue();
+                city = Ext.getCmp('city').getValue();
+                state = Ext.getCmp('state').getValue();
+                postalCode = Ext.getCmp('postalCode').getValue();
+                country = Ext.getCmp('country').getValue();
+                phone = Ext.getCmp('phone').getValue();
+                email = Ext.getCmp('email').getValue();
+
+                if ((!(isValidCardType)) || (!(isValidExpMonth)) || (!(isValidExpYear)) || (!(isValidCardNumber)) || (!(isValidPostalCode)) ||
+					    (!(isValidPhone)) || (!(isValidEmail)) || (Ext.isEmpty(dateReceived) || Ext.isEmpty(cardType) || firstnamecheck ||
+					    Ext.isEmpty(cardLastName) || Ext.isEmpty(cardNumber) || Ext.isEmpty(expMonth) || Ext.isEmpty(expYear) || Ext.isEmpty(address) ||
+					    Ext.isEmpty(city) || Ext.isEmpty(state) || Ext.isEmpty(postalCode) || Ext.isEmpty(country) || Ext.isEmpty(phone) || Ext.isEmpty(email))) {
+                    disablePaymentMethodCheck = true;
+                } else {
+                    disablePaymentMethodCheck = false;
+                }
+                break;
+        }
+
+        if (checkForAmount) {
+            if (paymentAmountValue == 0)
+                disablePaymentAmtCheck = true;
+            else
+                disablePaymentAmtCheck = false;
+        }
+
+        if ((Ext.isEmpty(paymentType)) || (Ext.isEmpty(paymentMethod)) || (disablePaymentMethodCheck) || (disablePaymentTypeCheck) || (disablePaymentAmtCheck))
+            return true;
+
+        return false;
+    },
+    /**
+    *
+    */
+    checkIfReferenceFieldsBlank: function (referenceOption) {
+        var lastname = Ext.getCmp('unidentifedLastname').getValue();
+        var account = Ext.getCmp('unidentifedAccount').getValue();
+        var policy = Ext.getCmp('unidentifedPolicy').getValue();
+        var other = Ext.getCmp('unidentifedOtherInfo').getValue();
+        var accountId = Ext.get('_hiddenAccountId').getValue();
+
+        if (Ext.isDefined(referenceOption)) {
+            if (referenceOption == 'accountPolicyName') {
+                if (Ext.isEmpty(accountId))
+                    return true;
+            }
+            if (referenceOption == 'unidentified') {
+                if ((Ext.isEmpty(lastname)) && (Ext.isEmpty(account)) && (Ext.isEmpty(policy)) && (Ext.isEmpty(other)))
+                    return true;
+            }
+        } else {
+            if ((Ext.isEmpty(lastname)) && (Ext.isEmpty(account)) && (Ext.isEmpty(policy)) && (Ext.isEmpty(other)) && (Ext.isEmpty(accountId)))
+                return true;
+        }
+
+        return false;
+    },
+    /**
+    *
+    */
+ 
+    /**
+    *
+    */
+    checkIfSuspenseFieldBlank: function (value) {
+        var selectedItems = Ext.getCmp('SuspenseList').getSelectionModel().getCount();
+
+        if (Ext.isEmpty(value) || (selectedItems == 0))
+            return true;
+
+        return false;
+    },
+    /**
+    *
+    */
+    checkIfOpenItemsFieldBlank: function () {
+        var openItemsAction = Ext.getCmp('openItemsActionField').getValue();
+        var selectedItems = Ext.getCmp('openItemsList').getSelectionModel().getCount();
+
+        if (Ext.isEmpty(openItemsAction) || (selectedItems == 0))
+            return true;
+
+        return false;
+    },
+    /**
+    *
+    */
+    checkIfStatementFieldBlank: function () {
+        var statementAction = Ext.getCmp('statementActionField').getValue();
+        var selectedItems = Ext.getCmp('scheduledItemsList').getSelectionModel().getCount();
+
+        if (Ext.isEmpty(statementAction) || (selectedItems == 1))
+            return true;
+
+        return false;
+    },
+    /**
+    *
+    */
+    checkIfPromiseToPayAndPaymentFieldsBlank: function () {
+        return (DCT.Util.checkIfPaymentFieldsBlank() || DCT.Util.checkIfPromiseToPayFieldsBlank());
+    },
+	
+	 checkIfPromiseToPayAndPaymentFieldsBlank1: function () {
+        return (DCT.Util.checkIfPaymentFieldsBlank() || DCT.Util.checkIfPromiseToPayFieldsBlank());
+    },
+    /**
+    *
+    */
+    checkIfPromiseToPayFieldsBlank: function () {
+        var paymentAmount = Ext.getCmp('paymentAmount');
+
+        var paymentAmountValue = parseFloat(paymentAmount.formatting.formatNumberToUS(paymentAmount.getValue()));
+
+        var disableAllocatedAmtCheck = false;
+        var disablePaymentAmtCheck = false;
+
+        if (Ext.getCmp('allPromiseToPayId')) {
+            var totalAllocated = Ext.getDom('amountAllocatedTotalId').value;
+            if (parseFloat(totalAllocated) == 0)
+                disableAllocatedAmtCheck = true;
+            else
+                disableAllocatedAmtCheck = false;
+        }
+
+        if (paymentAmountValue > 0)
+            disablePaymentAmtCheck = false;
+        else
+            disablePaymentAmtCheck = true;
+
+        if ((disableAllocatedAmtCheck) || (disablePaymentAmtCheck))
+            return true;
+        else
+            return false;
+
+    }
+});
